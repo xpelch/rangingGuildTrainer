@@ -11,22 +11,22 @@ import org.rspeer.game.script.TaskDescriptor;
 import com.google.inject.Inject;
 
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Interacting with the competition judge")
 public class CompetitionJudgeInteractionTask extends Task {
     private final GameStateService gameStateService;
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
 
     @Inject
-    public CompetitionJudgeInteractionTask(GameStateService gameStateService, ScriptService scriptService) {
+    public CompetitionJudgeInteractionTask(GameStateService gameStateService, PlayerService playerService) {
         this.gameStateService = gameStateService;
-        this.scriptService = scriptService;
+        this.playerService = playerService;
     }
 
     @Override
     public boolean execute() {
-        if (!scriptService.hasCoins()) {
+        if (playerService.hasNoMoney()) {
             gameStateService.setStopping(true);
             return false;
         }
@@ -35,7 +35,7 @@ public class CompetitionJudgeInteractionTask extends Task {
             return false;
         }
 
-        Npc judge = scriptService.fetchJudgeNpc();
+        Npc judge = playerService.fetchJudgeNpc();
         if (judge != null) {
             judge.interact(TALK_TO.getAction());
             Time.sleepUntil(Dialog::canContinue, 2000);

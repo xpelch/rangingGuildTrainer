@@ -7,16 +7,16 @@ import org.rspeer.game.script.Task;
 import org.rspeer.game.script.TaskDescriptor;
 
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Walking to shooting position")
 public class WalkToShootingPosition extends Task {
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
     private final GameStateService gameStateService;
 
     @Inject
-    public WalkToShootingPosition(ScriptService scriptService, GameStateService gameStateService) {
-        this.scriptService = scriptService;
+    public WalkToShootingPosition(PlayerService playerService, GameStateService gameStateService) {
+        this.playerService = playerService;
         this.gameStateService = gameStateService;
     }
 
@@ -26,13 +26,13 @@ public class WalkToShootingPosition extends Task {
             return false;
         }
 
-        Movement.walkTowards(scriptService.getShootingPosition());
+        Movement.walkTowards(playerService.getShootingPosition());
         return false;
     }
 
     private boolean shouldExecuteWalkToShootingPosition() {
         return gameStateService.isMiniGameStarted()
-            && scriptService.isPlayerWithinTargetPenArea()
-            && !scriptService.isPlayerAtShootingPosition();
+            && playerService.isPlayerWithinTargetPenArea()
+            && !playerService.isPlayerAtShootingPosition();
     }
 }

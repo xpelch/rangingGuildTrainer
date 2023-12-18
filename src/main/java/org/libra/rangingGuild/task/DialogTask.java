@@ -7,17 +7,17 @@ import org.rspeer.game.script.TaskDescriptor;
 import com.google.inject.Inject;
 
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Going through dialog")
 public class DialogTask extends Task {
     private static final int FIRST_OPTION_INDEX = 0;
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
     private final GameStateService gameStateService;
 
     @Inject
-    public DialogTask(ScriptService scriptService, GameStateService gameStateService) {
-        this.scriptService = scriptService;
+    public DialogTask(PlayerService playerService, GameStateService gameStateService) {
+        this.playerService = playerService;
         this.gameStateService = gameStateService;
     }
 
@@ -37,7 +37,7 @@ public class DialogTask extends Task {
     }
 
     private boolean shouldExecuteDialogTask() {
-        return scriptService.isPlayerWithinTargetPenArea()
+        return playerService.isPlayerWithinTargetPenArea()
             && !gameStateService.isMiniGameStarted()
             && Dialog.canContinue() || Dialog.isViewingChatOptions();
     }

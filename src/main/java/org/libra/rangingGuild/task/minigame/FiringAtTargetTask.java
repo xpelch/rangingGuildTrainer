@@ -20,20 +20,20 @@ import com.google.inject.Inject;
 import main.java.org.libra.rangingGuild.data.Bow;
 import main.java.org.libra.rangingGuild.domain.EventService;
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Firing at target")
 public class FiringAtTargetTask extends Task {
 
     private static final String BRONZE_ARROW = "Bronze arrow";
 
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
     private final GameStateService gameStateService;
     private final EventService eventService;
 
     @Inject
-    public FiringAtTargetTask(ScriptService scriptService, GameStateService gameStateService, EventService eventService) {
-        this.scriptService = scriptService;
+    public FiringAtTargetTask(PlayerService playerService, GameStateService gameStateService, EventService eventService) {
+        this.playerService = playerService;
         this.gameStateService = gameStateService;
         this.eventService = eventService;
     }
@@ -44,11 +44,11 @@ public class FiringAtTargetTask extends Task {
             return false;
         }
 
-        if (!scriptService.isBowEquipped()) {
+        if (!playerService.isBowEquipped()) {
             return equipBow();
         }
 
-        SceneObject target = scriptService.fetchTarget();
+        SceneObject target = playerService.fetchTarget();
         if (target != null) {
             target.interact(FIRE_AT.getAction());
             Time.sleepUntil(eventService::hasXpDropOccurred, 2000);
@@ -62,8 +62,8 @@ public class FiringAtTargetTask extends Task {
     private boolean shouldFireAtTarget() {
         Item quiverItem = Equipment.equipment().getItemAt(Equipment.Slot.QUIVER);
 
-        return scriptService.isPlayerWithinTargetPenArea()
-            && scriptService.isPlayerAtShootingPosition()
+        return playerService.isPlayerWithinTargetPenArea()
+            && playerService.isPlayerAtShootingPosition()
             && gameStateService.isMiniGameStarted()
             && !Dialog.canContinue()
             && quiverItem != null
@@ -73,7 +73,7 @@ public class FiringAtTargetTask extends Task {
 
     private boolean equipBow() {
         int playerRangedLevel = Skills.getLevel(Skill.RANGED);
-        Bow bestBow = Bow.getBestAvailableAccuracyBowForLevel(scriptService.fetchInventoryBows(), playerRangedLevel);
+        Bow bestBow = Bow.getBestAvailableAccuracyBowForLevel(playerService.fetchInventoryBows(), playerRangedLevel);
 
         if (bestBow == null) {
             Log.info("No bow found to equip");

@@ -14,17 +14,17 @@ import org.rspeer.game.script.TaskDescriptor;
 import com.google.inject.Inject;
 
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Equiping training arrow")
 public class EquipingTrainingArrowTask extends Task {
     private static final String TRAINING_ARROW = "Bronze arrow";
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
     private final GameStateService gameStateService;
 
     @Inject
-    public EquipingTrainingArrowTask(ScriptService scriptService, GameStateService gameStateService) {
-        this.scriptService = scriptService;
+    public EquipingTrainingArrowTask(PlayerService playerService, GameStateService gameStateService) {
+        this.playerService = playerService;
         this.gameStateService = gameStateService;
     }
 
@@ -49,7 +49,7 @@ public class EquipingTrainingArrowTask extends Task {
         Item trainingArrows = Backpack.backpack().getItems(TRAINING_ARROW).first();
         Item quiverItem = Equipment.equipment().getItemAt(Equipment.Slot.QUIVER);
 
-        return scriptService.isPlayerWithinTargetPenArea()
+        return playerService.isPlayerWithinTargetPenArea()
             && gameStateService.isMiniGameStarted()
             && trainingArrows != null
             && quiverItem == null;

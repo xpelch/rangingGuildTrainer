@@ -9,22 +9,22 @@ import org.rspeer.game.script.TaskDescriptor;
 import com.google.inject.Inject;
 
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Relaunching minigame")
 public class RelaunchMinigameTask extends Task {
     private static final String FIRE_AT_OPTION = "Fire-at";
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
     private final GameStateService gameStateService;
 
     @Inject
-    public RelaunchMinigameTask(ScriptService scriptService, GameStateService gameStateService) {
-        this.scriptService = scriptService;
+    public RelaunchMinigameTask(PlayerService playerService, GameStateService gameStateService) {
+        this.playerService = playerService;
         this.gameStateService = gameStateService;
     }
 
     public boolean execute() {
-        if (!scriptService.hasCoins()) {
+        if (playerService.hasNoMoney()) {
             gameStateService.setStopping(true);
             return false;
         }
@@ -33,7 +33,7 @@ public class RelaunchMinigameTask extends Task {
             return false;
         }
 
-        SceneObject target = scriptService.fetchTarget();
+        SceneObject target = playerService.fetchTarget();
         if (target != null) {
             target.interact(FIRE_AT_OPTION);
             Time.sleepUntil(Dialog::canContinue, 2000);
@@ -43,6 +43,6 @@ public class RelaunchMinigameTask extends Task {
     }
 
     private boolean shouldExecuteRelaunchMinigameTask() {
-        return gameStateService.isMiniGameOver() && scriptService.isPlayerWithinTargetPenArea();
+        return gameStateService.isMiniGameOver() && playerService.isPlayerWithinTargetPenArea();
     }
 }

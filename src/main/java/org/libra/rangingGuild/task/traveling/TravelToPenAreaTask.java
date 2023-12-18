@@ -7,15 +7,15 @@ import org.rspeer.game.script.TaskDescriptor;
 import com.google.inject.Inject;
 
 import main.java.org.libra.rangingGuild.data.Areas;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Traveling to pen area")
 public class TravelToPenAreaTask extends Task {
-    private final ScriptService scriptService;
+    private final PlayerService playerService;
 
     @Inject
-    public TravelToPenAreaTask(ScriptService scriptService) {
-        this.scriptService = scriptService;
+    public TravelToPenAreaTask(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class TravelToPenAreaTask extends Task {
 
     private boolean shouldExecuteTravelToPenAreaTask() {
 
-        return scriptService.isPlayerWithinRangingGuildArea() && !scriptService.isPlayerWithinTargetPenArea();
+        return playerService.isPlayerWithinRangingGuildArea() && !playerService.isPlayerWithinTargetPenArea();
     }
 }

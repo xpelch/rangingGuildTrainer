@@ -18,7 +18,7 @@ import main.java.org.libra.rangingGuild.commons.SilentService;
 import main.java.org.libra.rangingGuild.data.Areas;
 
 @Singleton
-public class ScriptService implements SilentService {
+public class PlayerService implements SilentService {
     private static final Position TARGET_POSITION = new Position(2679, 3426, 0);
     private static final Position SHOOTING_POSITION = new Position(2673, 3420, 0);
     private static final String BOW = "bow";
@@ -63,8 +63,11 @@ public class ScriptService implements SilentService {
         return Areas.RANGING_GUILD_ENTRANCE.getArea().contains(Players.self());
     }
 
-    public boolean hasCoins() {
-        return Backpack.backpack().getItems(COINS).first().getStackSize() >= MINIMUM_COINS;
+    public boolean hasNoMoney() {
+        if(Backpack.backpack().getItems(COINS).isEmpty()) {
+            return true;
+        }
+        return Backpack.backpack().getItems(COINS).first().getStackSize() <= MINIMUM_COINS;
     }
 
     public boolean isBowEquipped() {

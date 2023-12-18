@@ -21,7 +21,7 @@ import org.rspeer.game.service.stockmarket.StockMarketService;
 
 import main.java.org.libra.rangingGuild.domain.EventService;
 import main.java.org.libra.rangingGuild.domain.GameStateService;
-import main.java.org.libra.rangingGuild.domain.ScriptService;
+import main.java.org.libra.rangingGuild.domain.PlayerService;
 import main.java.org.libra.rangingGuild.task.DialogTask;
 import main.java.org.libra.rangingGuild.task.StopTask;
 import main.java.org.libra.rangingGuild.task.minigame.CompetitionJudgeInteractionTask;
@@ -35,7 +35,7 @@ import main.java.org.libra.rangingGuild.task.traveling.WalkToShootingPosition;
 @org.rspeer.event.ScriptService({
     InventoryCache.class,
     StockMarketService.class,
-    ScriptService.class,
+    PlayerService.class,
     EventService.class,
     GameStateService.class,
 })
