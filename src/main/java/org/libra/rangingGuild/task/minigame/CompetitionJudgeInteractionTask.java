@@ -38,7 +38,7 @@ public class CompetitionJudgeInteractionTask extends Task {
         Npc judge = playerService.fetchJudgeNpc();
         if (judge != null) {
             judge.interact(TALK_TO.getAction());
-            Time.sleepUntil(Dialog::canContinue, 2000);
+            sleepUntil(Dialog::canContinue, 3);
         }
 
         return true;

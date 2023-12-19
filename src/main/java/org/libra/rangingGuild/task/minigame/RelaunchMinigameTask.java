@@ -36,7 +36,7 @@ public class RelaunchMinigameTask extends Task {
         SceneObject target = playerService.fetchTarget();
         if (target != null) {
             target.interact(FIRE_AT_OPTION);
-            Time.sleepUntil(Dialog::canContinue, 2000);
+            sleepUntil(Dialog::canContinue, 3);
         }
 
         return true;

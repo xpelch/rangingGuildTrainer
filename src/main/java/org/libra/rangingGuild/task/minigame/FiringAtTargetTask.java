@@ -51,7 +51,7 @@ public class FiringAtTargetTask extends Task {
         SceneObject target = playerService.fetchTarget();
         if (target != null) {
             target.interact(FIRE_AT.getAction());
-            Time.sleepUntil(eventService::hasXpDropOccurred, 2000);
+            sleepUntil(eventService::hasXpDropOccurred, 3);
 
             eventService.resetXpDropOccurred();
         }

@@ -16,6 +16,7 @@ import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Traveling to ranging guild")
 public class TravelToRangingGuildTask extends Task {
+    private static final int PLAYER_IDLE_ID = 808;
     private final PlayerService playerService;
 
     @Inject
@@ -31,14 +32,14 @@ public class TravelToRangingGuildTask extends Task {
 
         if (!playerService.isPlayerWithinRangingGuildEntranceArea()) {
             Movement.walkTo(Areas.RANGING_GUILD_ENTRANCE.getArea().getRandomTile());
-            Time.sleepUntil(() -> Players.self().getStance().getId() == 808, 2000);
+            sleepUntil(() -> Players.self().getStance().getId() == PLAYER_IDLE_ID, 3);
         }
 
         if (playerService.isPlayerWithinRangingGuildEntranceArea()) {
             SceneObject door = playerService.fetchGuildDoor();
             if (door != null) {
                 door.interact(OPEN.getAction());
-                Time.sleepUntil(playerService::isPlayerWithinRangingGuildArea, 2000);
+                sleepUntil(playerService::isPlayerWithinRangingGuildArea, 3);
             }
         }
         return true;

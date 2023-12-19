@@ -35,12 +35,12 @@ public class EquipingTrainingArrowTask extends Task {
 
         if (!Tabs.isOpen(Tab.INVENTORY)) {
             Tabs.open(Tab.INVENTORY);
-            Time.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 2000);
+            sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 3);
         }
 
         Backpack backpack = Backpack.backpack();
         backpack.getItems(TRAINING_ARROW).first().interact(WIELD.getAction());
-        Time.sleepUntil(() -> Equipment.equipment().getItemAt(Equipment.Slot.QUIVER) != null, 2000);
+        sleepUntil(() -> Equipment.equipment().getItemAt(Equipment.Slot.QUIVER) != null, 3);
 
         return true;
     }

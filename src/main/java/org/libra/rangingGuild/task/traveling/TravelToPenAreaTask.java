@@ -1,6 +1,7 @@
 package main.java.org.libra.rangingGuild.task.traveling;
 
 import org.rspeer.game.movement.Movement;
+import org.rspeer.game.scene.Players;
 import org.rspeer.game.script.Task;
 import org.rspeer.game.script.TaskDescriptor;
 
@@ -11,6 +12,7 @@ import main.java.org.libra.rangingGuild.domain.PlayerService;
 
 @TaskDescriptor(name = "Traveling to pen area")
 public class TravelToPenAreaTask extends Task {
+    private static final int PLAYER_IDLE_ID = 808;
     private final PlayerService playerService;
 
     @Inject
@@ -24,8 +26,8 @@ public class TravelToPenAreaTask extends Task {
             return false;
         }
 
-        Movement.walkTo(Areas.RANGING_PEN.getArea().getCenter());
-
+        Movement.walkTowards(Areas.RANGING_PEN.getArea().getCenter());
+        sleepUntil(() -> Players.self().getStance().getId() == PLAYER_IDLE_ID, 3);
         return false;
     }
 
